@@ -1,5 +1,6 @@
 package com.example.demo.kafka;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Component;
 import com.example.demo.Constants;
 import com.example.demo.model.Model;
 
+import java.util.concurrent.*;
+import java.util.stream.IntStream;
+
 @Component
 public class Listener {
 
@@ -22,9 +26,26 @@ public class Listener {
 
 	@KafkaListener(topics = Constants.KAFKA_TOPIC)
 	public void processMessage(ConsumerRecord<String, Model> cr, @Payload Model content) {
-		LOG.info("Received content from Kafka: {}", content);
+//		IntStream.range(0, 1)
+//				.peek(i -> this.waitFor(3))
+//				.mapToObj(i -> content)
+//				.forEach(this::sendToWc);
+		this.webSocket.convertAndSend("/topic/component",content);
 
-		this.webSocket.convertAndSend(Constants.WEBSOCKET_DESTINATION, content.getMessage());
 	}
 
+
+		private void sendToWc(Model content){
+			this.webSocket.convertAndSend("/topic/component",content);
+		}
+
+	private void waitFor(int seconds) {
+		ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+		Future<Void> future = scheduler.schedule(() -> null, seconds, TimeUnit.SECONDS);
+		try {
+			future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
 }

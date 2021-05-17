@@ -1,0 +1,24 @@
+input,select {    
+    cursor: pointer; text-align: center;
+    width: -webkit-fill-available;
+}
+
+form {
+  background-color: darkgrey;
+  text-align: center;
+}
+
+
+button{
+    background-color:#CCEFD9; 
+    cursor: pointer;
+}
+button:active{
+background-color:white;
+}
+
+.message{
+
+margin: 0 40% ;
+padding: 0.4rem 0;
+}

@@ -1,0 +1,17 @@
+<form [formGroup]="myForm" (ngSubmit)="submit()">
+  <div class="message">
+  <select  formControlName="consumers">
+    <option  value="">  Select  </option>
+    <option  value="consumerone-wc">  C-wc-1  </option>
+    <option  value="consumertwo-wc">  C-wc-2  </option>
+  </select>
+</div>
+  <div class="message">
+    Produce messages: <br><input type="number" id="numberInput" formControlName="nMessage">
+  </div>
+  <div class="message">  <button type = "submit">Send</button>
+  </div>
+
+
+</form>
+
